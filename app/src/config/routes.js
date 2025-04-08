@@ -13,7 +13,7 @@ const routes = {
   admin: {
     dashboard: "/admin",
     lecture: "admin/lecture",
-    problemPageAdmin: "/problemsAdmin",
+    problemPageAdmin: "/admin/problem",
     coursePageAdmin: "/coursesAdmin",
   },
   problemPage: "/problems",

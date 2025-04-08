@@ -50,7 +50,7 @@ const Sidebar = () => {
 								className='rounded-lg '
 								aria-label='API'
 							>
-								<a href='/problemsAdmin'>
+								<a href='/admin/problem'>
 									<Code2 className='size-5' />
 								</a>
 							</Button>

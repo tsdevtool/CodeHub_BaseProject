@@ -14,13 +14,14 @@ import uploadRouter from './routes/upload.route.js';
 import userRouter from './routes/user.route.js';
 import userInfoRouter from './routes/userInfo.route.js';
 import progressRouter from './routes/progress.route.js';
+import codeRouter from './routes/code.route.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 5050;
 const app = express();
 const corsOptions = {
 	origin: 'http://localhost:5173',
-	methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+	methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE', 'PATCH'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
 	credentials: true,
 };
@@ -41,6 +42,7 @@ app.use('/users', userInfoRouter);
 app.use('/news', newsRouter);
 app.use('/upload', uploadRouter);
 app.use('/progress', progressRouter);
+app.use('/code', codeRouter);
 
 app.use(defaultErrorHandler);
 

@@ -27,7 +27,7 @@ const IndexHomePage = React.lazy(() =>
   import("../container/Home/pages/IndexHome/IndexHome.jsx")
 );
 
-const AdminDashboard = React.lazy(() => import("../container/Admin/Admin.jsx"));
+// const AdminDashboard = React.lazy(() => import("../container/Admin/Category/index.jsx"));
 const AdminLecture = React.lazy(() =>
   import("../container/Admin/Admin_Lectures.jsx")
 );
@@ -41,7 +41,7 @@ const ProblemPage = React.lazy(() =>
 // );
 
 const ProblemPageAdmin = React.lazy(() =>
-  import("../container/Admin/Admin.jsx")
+  import("../container/Admin/Category/index.jsx")
 );
 
 const CoursePageAdmin = React.lazy(() =>
@@ -177,10 +177,10 @@ const protectedRoute = [
 ];
 
 const adminRoute = [
-  {
-    path: config.routes.admin.dashboard,
-    component: AdminDashboard,
-  },
+  // {
+  //   path: config.routes.admin.dashboard,
+  //   component: AdminDashboard,
+  // },
   {
     path: config.routes.admin.lecture,
     component: AdminLecture,

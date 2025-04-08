@@ -25,7 +25,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const Output = ({ editorRef, language }) => {
+const Output = ({ editorValue, language }) => {
 	const [form, setForm] = useState({
 		title: '',
 		type: '',
@@ -78,38 +78,43 @@ const Output = ({ editorRef, language }) => {
 	const [executionTime, setExecutionTime] = useState(null);
 
 	const runCode = async () => {
-		const sourceCode = editorRef.current.getValue();
+		// Use the code string passed as editorValue instead of using editorRef.current.getValue()
+		const sourceCode = editorValue;
 		if (!sourceCode) return;
-
+	  
 		setIsLoading(true);
 		setErrorMessage(null);
-
+	  
 		const startTime = Date.now();
-
+	  
 		try {
-			const { run: result } = await executeCode(language, sourceCode);
-			const userOutput = result.output.split('\n');
-			setOutput(userOutput);
-			const passed = checkTestcase(userOutput);
-			if (passed === form.testCases.length) {
-				toast.success(`Congratulations! All ${passed} test cases passed! 🎉`);
-			} else {
-				toast.error(
-					`Your code passed ${passed} out of ${form.testCases.length} test cases.`,
-				);
-			}
+		  const { run: result } = await executeCode(language, sourceCode);
+		  // Make sure result.output exists and is a string before splitting
+		  if (!result || typeof result.output !== "string") {
+			throw new Error("Invalid output received from code execution.");
+		  }
+		  const userOutput = result.output.split("\n");
+		  setOutput(userOutput);
+		  const passed = checkTestcase(userOutput);
+		  if (passed === form.testCases.length) {
+			toast.success(`Congratulations! All ${passed} test cases passed! 🎉`);
+		  } else {
+			toast.error(
+			  `Your code passed ${passed} out of ${form.testCases.length} test cases.`
+			);
+		  }
 		} catch (error) {
-			console.error(error);
-			setIsError(true);
-			setErrorMessage('An error occurred while running your code.');
+		  console.error(error);
+		  setIsError(true);
+		  setErrorMessage("An error occurred while running your code.");
 		} finally {
-			const endTime = Date.now();
-			const time = endTime - startTime;
-			setExecutionTime(time);
-
-			setIsLoading(false);
+		  const endTime = Date.now();
+		  const time = endTime - startTime;
+		  setExecutionTime(time);
+		  setIsLoading(false);
 		}
-	};
+	  };
+	  
 	// const runCode = async () => {
 	// 	const sourceCode = editorRef.current.getValue();
 	// 	if (!sourceCode) return;
@@ -139,7 +144,7 @@ const Output = ({ editorRef, language }) => {
 	// };
 
 	const checkTestcase = userOutput => {
-		const sourceCode = editorRef.current.getValue();
+		const sourceCode = editorValue;
 		let passed = 0;
 		const printKeywords = [
 			'console.log(',
@@ -178,13 +183,14 @@ const Output = ({ editorRef, language }) => {
 	};
 
 	const requestRating = async () => {
-		const sourceCode = editorRef.current.getValue();
+		// const sourceCode = editorRef.current.getValue();
+		const sourceCode = editorValue;
 		setGeneratingAnswer(true);
 		console.log('Requesting rating...');
 
 		try {
 			const response = await axios({
-				url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${
+				url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${
 					import.meta.env.VITE_API_GENERATIVE_LANGUAGE_CLIENT
 				}`,
 				method: 'post',
